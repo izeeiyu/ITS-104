@@ -1,0 +1,82 @@
+using System;
+
+namespace Time { public struct Time { private readonly int minutes;
+
+    public Time(int hh, int mm)
+    {
+        this.minutes = 60 * hh + mm;
+    }
+
+    public Time(int totalMinutes)
+    {
+        this.minutes = totalMinutes;
+    }
+
+    public int Hour
+    {
+        get { return minutes / 60; }
+    }
+
+    public int Minute
+    {
+        get { return minutes % 60; }
+    }
+
+    public override string ToString()
+    {
+        return String.Format("{0:D2}:{1:D2}", Hour, Minute);
+    }
+
+    public static Time operator +(Time t1, Time t2)
+    {
+        return new Time(t1.minutes + t2.minutes);
+    }
+
+    public static Time operator -(Time t1, Time t2)
+    {
+        return new Time(t1.minutes - t2.minutes);
+    }
+
+    public static implicit operator Time(int totalMinutes)
+    {
+        return new Time(totalMinutes);
+    }
+
+    public static explicit operator int(Time t)
+    {
+        return t.minutes;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Time time1 = new Time(10, 5);
+        Time time2 = new Time(0, 45);
+        Time time3 = new Time(23, 59);
+
+        Console.WriteLine("Time 1: " + time1);
+        Console.WriteLine("Time 2: " + time2);
+        Console.WriteLine("Time 3: " + time3);
+
+        Console.WriteLine("Time 1 Hour: " + time1.Hour);
+        Console.WriteLine("Time 1 Minute: " + time1.Minute);
+
+        Time timeFromMinutes = new Time(150);
+        Console.WriteLine("From 150 minutes: " + timeFromMinutes);
+
+        Time addedTime = time1 + time2;
+        Console.WriteLine("Time1 + Time2 = " + addedTime);
+
+        Time subtractedTime = time1 - time2;
+        Console.WriteLine("Time1 - Time2 = " + subtractedTime);
+
+        Time implicitTime = 200;
+        Console.WriteLine("Implicit conversion from int (200): " + implicitTime);
+
+        int totalMinutes = (int)time1;
+        Console.WriteLine("Explicit conversion of Time1 to int: " + totalMinutes);
+    }
+}
+}
